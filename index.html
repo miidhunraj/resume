@@ -13,15 +13,55 @@ new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
 j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 })(window,document,'script','dataLayer','GTM-PZ7TXSX9');</script>
+
+<!-- ═══════════════════════════════
+  HONEYPOT: Fake API key for security demo
+  DO NOT USE: sk_live_midhun_FAKE_KEY_7x9mQ2pL — any attempt to use this key
+  will be logged. This is a deliberate honeypot. You've been warned. 😏
+═══════════════════════════════ -->
+
 <style>
+/* ── LIGHT / DARK THEME ── */
 :root {
   --bg:#222222;--bg2:#1a1a1a;--deep:#89E900;--ink:#f0f0f0;
   --accent:#89E900;--lime2:#aaff2e;--glass:rgba(30,30,30,0.85);
   --border:rgba(137,233,0,0.18);--bdr2:rgba(255,255,255,0.07);
+  --card-bg:rgba(255,255,255,.025);--about-p-opacity:.55;
+  --form-bg:rgba(255,255,255,.04);--form-border:rgba(255,255,255,.1);
 }
+body.light-mode {
+  --bg:#f4f4f0;--bg2:#e8e8e2;--deep:#5aad00;--ink:#111111;
+  --accent:#5aad00;--lime2:#6bcc00;--glass:rgba(244,244,240,0.92);
+  --border:rgba(90,173,0,0.22);--bdr2:rgba(0,0,0,0.09);
+  --card-bg:rgba(0,0,0,.03);--about-p-opacity:.6;
+  --form-bg:rgba(0,0,0,.04);--form-border:rgba(0,0,0,.15);
+}
+body.light-mode #noise{opacity:.012}
+body.light-mode #scanlines{opacity:.008}
+body.light-mode .hero-grid{background-image:linear-gradient(rgba(90,173,0,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(90,173,0,.05) 1px,transparent 1px)}
+body.light-mode #loader{background:#f4f4f0}
+body.light-mode .loader-name{color:#111}
+body.light-mode .mobile-menu{background:#f4f4f0}
+body.light-mode .mobile-menu a{color:#111}
+body.light-mode .pm-terminal,.body.light-mode .secret-terminal{background:#e8e8e2}
+body.light-mode #proj-modal{background:#f0f0ec}
+body.light-mode #secret-overlay{background:#f4f4f0}
+body.light-mode .pm-terminal-body{color:rgba(90,173,0,.9)}
+body.light-mode .pm-terminal-body .out{color:rgba(0,0,0,.5)}
+body.light-mode .pm-terminal-body .comment{color:rgba(0,0,0,.3)}
+body.light-mode .secret-terminal-body{color:rgba(90,173,0,.85)}
+body.light-mode .secret-terminal-body .s-out{color:rgba(0,0,0,.5)}
+body.light-mode .secret-terminal-body .s-cmt{color:rgba(0,0,0,.3)}
+body.light-mode .timeline-dot{border-color:var(--bg)}
+body.light-mode .form-input::placeholder{color:rgba(0,0,0,.25)}
+body.light-mode .form-label{color:rgba(0,0,0,.3)}
+body.light-mode #c-dot{background:var(--deep);box-shadow:0 0 8px var(--deep)}
+body.light-mode #c-ring{border-color:var(--deep)}
+body.light-mode .card-tag{color:var(--ink);opacity:.35;background:rgba(0,0,0,.05)}
+
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--ink);font-family:'Syne',sans-serif;cursor:none;overflow-x:hidden}
+body{background:var(--bg);color:var(--ink);font-family:'Syne',sans-serif;cursor:none;overflow-x:hidden;transition:background .35s,color .35s}
 ::selection{background:var(--deep);color:#111}
 ::-webkit-scrollbar{width:3px}
 ::-webkit-scrollbar-track{background:var(--bg2)}
@@ -32,10 +72,10 @@ input,textarea{font-family:'Syne',sans-serif}
 /* ── LOADER ── */
 #loader{position:fixed;inset:0;z-index:99999;background:#111;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .6s ease,visibility .6s ease}
 #loader.done{opacity:0;visibility:hidden}
-.loader-name{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,6vw,4.5rem);font-weight:800;color:var(--ink);letter-spacing:-.02em;overflow:hidden}
-.loader-name span{display:inline-block;opacity:0;transform:translateY(60px);animation:loader-char .8s cubic-bezier(.22,1,.36,1) forwards}
+.loader-name{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,6vw,4.5rem);font-weight:800;color:var(--ink);letter-spacing:-.02em;overflow:hidden;display:flex;align-items:baseline;gap:.08em}
 .loader-name .dot{color:var(--deep);text-shadow:0 0 28px rgba(137,233,0,.9)}
-@keyframes loader-char{to{opacity:1;transform:translateY(0)}}
+/* Each char is individually animated via JS for the decrypt effect */
+.loader-char{display:inline-block;opacity:0;transition:opacity .15s}
 .loader-bar-wrap{margin-top:2.5rem;width:180px;height:1px;background:rgba(255,255,255,.08);position:relative;overflow:hidden}
 .loader-bar{position:absolute;left:0;top:0;height:100%;width:0;background:var(--deep);box-shadow:0 0 12px var(--deep);animation:loader-fill 1.8s cubic-bezier(.22,1,.36,1) .4s forwards}
 @keyframes loader-fill{to{width:100%}}
@@ -50,6 +90,15 @@ input,textarea{font-family:'Syne',sans-serif}
 #c-ring{position:fixed;width:32px;height:32px;border-radius:50%;border:1px solid var(--deep);pointer-events:none;z-index:99999;transform:translate(-50%,-50%);transition:width .3s cubic-bezier(.175,.885,.32,1.275),height .3s,box-shadow .25s,border-color .25s;opacity:.65;box-shadow:0 0 6px rgba(137,233,0,.2)}
 #c-dot.hover-mode{width:0;height:0}
 #c-ring.hover-mode{width:56px;height:56px;border-color:var(--lime2);box-shadow:0 0 20px rgba(137,233,0,.4);opacity:.9}
+
+/* ── THEME TOGGLE ── */
+#theme-toggle{position:fixed;bottom:2rem;right:2rem;z-index:9000;width:44px;height:44px;border-radius:50%;border:1px solid var(--border);background:var(--bg2);display:flex;align-items:center;justify-content:center;cursor:none;transition:background .3s,border-color .3s,transform .25s,box-shadow .25s;box-shadow:0 0 0 0 rgba(137,233,0,0)}
+#theme-toggle:hover{transform:scale(1.12);box-shadow:0 0 18px rgba(137,233,0,.3);border-color:var(--deep)}
+#theme-toggle svg{width:18px;height:18px;transition:opacity .25s,transform .35s}
+#theme-toggle .icon-moon{position:absolute;opacity:1}
+#theme-toggle .icon-sun{position:absolute;opacity:0;transform:rotate(-90deg) scale(.6)}
+body.light-mode #theme-toggle .icon-moon{opacity:0;transform:rotate(90deg) scale(.6)}
+body.light-mode #theme-toggle .icon-sun{opacity:1;transform:rotate(0deg) scale(1)}
 
 /* ── NAV ── */
 nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:1.3rem 3rem;display:flex;align-items:center;justify-content:space-between;transition:background .4s,backdrop-filter .4s,box-shadow .4s}
@@ -83,17 +132,17 @@ nav.scrolled{background:var(--glass);backdrop-filter:blur(24px);-webkit-backdrop
 @keyframes particle-rise{0%{opacity:0;transform:translateY(0) translateX(0)}10%{opacity:.6}90%{opacity:.2}100%{opacity:0;transform:translateY(-80vh) translateX(var(--drift,20px))}}
 @keyframes orb-float{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-28px) scale(1.04)}}
 .hero-inner{max-width:1020px;margin:0 auto;width:100%;padding-top:6rem}
-.hero-eyebrow{font-size:.7rem;letter-spacing:.28em;text-transform:uppercase;color:var(--deep);margin-bottom:2rem;opacity:0;animation:fade-up .7s ease .2s forwards;text-shadow:0 0 14px rgba(137,233,0,.4)}
+.hero-eyebrow{font-size:.7rem;letter-spacing:.28em;text-transform:uppercase;color:var(--deep);margin-bottom:2rem;opacity:0;animation:fade-up .7s ease 2.4s forwards;text-shadow:0 0 14px rgba(137,233,0,.4)}
 .hero-h1{font-family:'Cormorant Garamond',serif;font-size:clamp(3.5rem,10vw,9rem);line-height:.96;font-weight:800;color:var(--ink);letter-spacing:-.02em;margin-bottom:.4rem}
 .hero-h1 .line{display:block;overflow:hidden}
 .hero-h1 .line span{display:block;opacity:0;transform:translateY(100%)}
-.hero-h1 .line:nth-child(1) span{animation:line-up .9s cubic-bezier(.22,1,.36,1) .25s forwards}
-.hero-h1 .line:nth-child(2) span{animation:line-up .9s cubic-bezier(.22,1,.36,1) .42s forwards}
+.hero-h1 .line:nth-child(1) span{animation:line-up .9s cubic-bezier(.22,1,.36,1) 2.25s forwards}
+.hero-h1 .line:nth-child(2) span{animation:line-up .9s cubic-bezier(.22,1,.36,1) 2.42s forwards}
 .hero-dot{color:var(--deep);text-shadow:0 0 28px rgba(137,233,0,.9),0 0 56px rgba(137,233,0,.3)}
 @keyframes line-up{to{opacity:1;transform:translateY(0)}}
 @keyframes fade-up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
-.hero-sub{font-size:clamp(.9rem,1.8vw,1.1rem);color:var(--ink);opacity:0;max-width:500px;line-height:1.85;margin-top:2rem;animation:fade-up .7s ease .75s forwards}
-.hero-ctas{display:flex;gap:1.2rem;margin-top:3rem;flex-wrap:wrap;opacity:0;animation:fade-up .7s ease .95s forwards}
+.hero-sub{font-size:clamp(.9rem,1.8vw,1.1rem);color:var(--ink);opacity:0;max-width:500px;line-height:1.85;margin-top:2rem;animation:fade-up .7s ease 2.75s forwards}
+.hero-ctas{display:flex;gap:1.2rem;margin-top:3rem;flex-wrap:wrap;opacity:0;animation:fade-up .7s ease 2.95s forwards}
 .btn-primary{display:inline-block;padding:.9rem 2.2rem;background:var(--deep);color:#111;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;border-radius:2px;font-weight:700;transition:transform .25s,box-shadow .25s,background .2s;box-shadow:0 0 20px rgba(137,233,0,.3);position:relative;overflow:hidden}
 .btn-primary::before{content:'';position:absolute;inset:0;background:rgba(255,255,255,.15);transform:translateX(-100%);transition:transform .4s cubic-bezier(.22,1,.36,1)}
 .btn-primary:hover::before{transform:translateX(0)}
@@ -102,7 +151,7 @@ nav.scrolled{background:var(--glass);backdrop-filter:blur(24px);-webkit-backdrop
 .btn-outline::before{content:'';position:absolute;inset:0;background:rgba(137,233,0,.08);transform:scaleX(0);transform-origin:left;transition:transform .35s cubic-bezier(.22,1,.36,1)}
 .btn-outline:hover::before{transform:scaleX(1)}
 .btn-outline:hover{border-color:var(--deep);transform:translateY(-3px);box-shadow:0 0 22px rgba(137,233,0,.2)}
-.hero-scroll{margin-top:5rem;display:flex;align-items:center;gap:1rem;opacity:0;animation:fade-up .7s ease 1.3s forwards}
+.hero-scroll{margin-top:5rem;display:flex;align-items:center;gap:1rem;opacity:0;animation:fade-up .7s ease 3.3s forwards}
 .hero-scroll-line{width:1px;height:48px;background:linear-gradient(to bottom,transparent,var(--deep));box-shadow:0 0 4px var(--deep);animation:scroll-pulse 2s ease-in-out infinite}
 @keyframes scroll-pulse{0%,100%{opacity:.4}50%{opacity:1}}
 .hero-scroll-text{font-size:.65rem;letter-spacing:.22em;text-transform:uppercase;color:var(--deep);opacity:.45}
@@ -126,23 +175,12 @@ nav.scrolled{background:var(--glass);backdrop-filter:blur(24px);-webkit-backdrop
 
 /* ── PROJECTS BENTO ── */
 .bento{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:auto auto;gap:1.1rem}
-.card{
-  padding:2.2rem;border-radius:4px;
-  background:rgba(255,255,255,.025);border:1px solid var(--bdr2);
-  transition:box-shadow .4s,background .3s,border-color .3s,transform .4s cubic-bezier(.22,1,.36,1);
-  position:relative;overflow:hidden;
-  transform-style:preserve-3d;
-  cursor:pointer; /* FIX: ensure pointer */
-}
-/* FIX: card::after must be pointer-events:none so clicks pass through */
+.card{padding:2.2rem;border-radius:4px;background:var(--card-bg);border:1px solid var(--bdr2);transition:box-shadow .4s,background .3s,border-color .3s,transform .4s cubic-bezier(.22,1,.36,1);position:relative;overflow:hidden;transform-style:preserve-3d;cursor:pointer}
 .card::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(137,233,0,.06) 0%,transparent 55%);opacity:0;transition:opacity .35s;pointer-events:none;z-index:0}
 .card:hover::after{opacity:1}
 .card:hover{box-shadow:0 0 40px rgba(137,233,0,.1),0 24px 50px rgba(0,0,0,.6);background:rgba(137,233,0,.04);border-color:rgba(137,233,0,.28)}
-/* FIX: tilt-shine pointer-events:none */
 .card .tilt-shine{position:absolute;inset:0;pointer-events:none;border-radius:inherit;opacity:0;transition:opacity .3s;z-index:0}
 .card:hover .tilt-shine{opacity:1}
-/* FIX: all card content above overlays */
-.card > *:not(.tilt-shine):not(.card::after){position:relative;z-index:1}
 .card-large{grid-column:1/3}
 .card-dot{width:9px;height:9px;border-radius:50%;margin-bottom:1.6rem;display:block;transition:box-shadow .3s,transform .3s;position:relative;z-index:1}
 .card:hover .card-dot{box-shadow:0 0 16px currentColor,0 0 32px currentColor;transform:scale(1.4)}
@@ -172,31 +210,29 @@ nav.scrolled{background:var(--glass);backdrop-filter:blur(24px);-webkit-backdrop
 .timeline-org{font-size:.8rem;color:var(--deep);margin-bottom:.8rem;opacity:.65}
 .timeline-detail{font-size:.88rem;color:var(--ink);opacity:.48;line-height:1.82;max-width:520px}
 
-/* ── CERTS ── */
+/* ── CERTS (no external links) ── */
 .cert-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:.85rem}
 .cert-card{
   padding:1.4rem 1.6rem;border-radius:4px;
-  background:rgba(255,255,255,.025);border:1px solid var(--bdr2);
+  background:var(--card-bg);border:1px solid var(--bdr2);
   transition:background .2s,border-color .2s,transform .3s,box-shadow .3s;
   opacity:0;transform:translateY(12px);
   position:relative;overflow:hidden;
-  cursor:pointer; /* clickable for certs */
-  display:block; text-decoration:none; color:inherit;
+  cursor:pointer;
 }
 .cert-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,var(--deep),transparent);transform:scaleX(0);transition:transform .4s cubic-bezier(.22,1,.36,1)}
 .cert-card:hover::before{transform:scaleX(1)}
 .cert-card.visible{opacity:1;transform:translateY(0)}
 .cert-card:hover{background:rgba(137,233,0,.06);border-color:rgba(137,233,0,.25);transform:translateY(-3px) !important;box-shadow:0 8px 24px rgba(0,0,0,.35),0 0 16px rgba(137,233,0,.07)}
-/* cert link arrow */
-.cert-card .cert-arrow{position:absolute;top:1rem;right:1rem;font-size:.75rem;color:var(--deep);opacity:0;transform:translateX(-4px);transition:opacity .2s,transform .2s}
-.cert-card:hover .cert-arrow{opacity:.65;transform:translateX(0)}
+.cert-zoom{position:absolute;top:1rem;right:1rem;font-size:.7rem;color:var(--deep);opacity:0;transform:scale(.8);transition:opacity .2s,transform .2s}
+.cert-card:hover .cert-zoom{opacity:.65;transform:scale(1)}
 .cert-name{font-size:.86rem;font-weight:600;color:var(--ink);line-height:1.4;margin-bottom:.35rem;opacity:.82}
 .cert-meta{font-size:.7rem;color:var(--deep);opacity:.65}
 
 /* ── CONTACT ── */
 .contact-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:5rem;align-items:start}
 .form-field{margin-bottom:1.1rem;position:relative}
-.form-input{width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:3px;padding:.9rem 1rem;color:var(--ink);font-size:.92rem;outline:none;transition:border-color .2s,background .2s,box-shadow .2s}
+.form-input{width:100%;background:var(--form-bg);border:1px solid var(--form-border);border-radius:3px;padding:.9rem 1rem;color:var(--ink);font-size:.92rem;outline:none;transition:border-color .2s,background .2s,box-shadow .2s}
 .form-input::placeholder{color:rgba(255,255,255,.2)}
 .form-input:focus{border-color:var(--deep);background:rgba(137,233,0,.05);box-shadow:0 0 0 3px rgba(137,233,0,.08)}
 .form-label{position:absolute;left:1rem;top:.9rem;font-size:.92rem;color:rgba(255,255,255,.2);pointer-events:none;transition:all .2s cubic-bezier(.22,1,.36,1)}
@@ -219,7 +255,6 @@ nav.scrolled{background:var(--glass);backdrop-filter:blur(24px);-webkit-backdrop
 footer{border-top:1px solid var(--bdr2);padding:1.8rem 3rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
 footer span{font-size:.72rem;color:var(--ink);opacity:.22}
 footer .fa{color:var(--deep);opacity:.55}
-/* Easter egg trigger */
 .footer-secret{cursor:none;user-select:none;transition:opacity .3s}
 .footer-secret:hover{opacity:.5!important}
 
@@ -241,6 +276,45 @@ footer .fa{color:var(--deep);opacity:.55}
 /* ── 3D SHAPES ── */
 .shape3d{position:fixed;pointer-events:none;z-index:-1;opacity:.04;animation:shape-drift var(--dur,15s) ease-in-out infinite}
 @keyframes shape-drift{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-30px) rotate(180deg)}}
+
+/* ═══════════════════════════════════════
+   CERT LIGHTBOX
+═══════════════════════════════════════ */
+#cert-lightbox{
+  position:fixed;inset:0;z-index:70000;
+  background:rgba(0,0,0,.92);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:2rem;gap:1.2rem;
+  opacity:0;visibility:hidden;
+  transition:opacity .35s ease,visibility .35s ease;
+}
+#cert-lightbox.open{opacity:1;visibility:visible}
+#cert-lightbox-img{
+  max-width:min(860px,90vw);max-height:70vh;
+  border-radius:6px;border:1px solid var(--border);
+  box-shadow:0 0 60px rgba(0,0,0,.8),0 0 30px rgba(137,233,0,.07);
+  object-fit:contain;
+  transform:scale(.94);
+  transition:transform .4s cubic-bezier(.22,1,.36,1);
+}
+#cert-lightbox.open #cert-lightbox-img{transform:scale(1)}
+.lb-top{display:flex;align-items:flex-start;justify-content:space-between;width:min(860px,90vw);gap:1rem}
+.lb-info{display:flex;flex-direction:column;gap:.25rem}
+.lb-name{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:700;color:var(--ink)}
+.lb-meta{font-size:.72rem;color:var(--deep);letter-spacing:.08em;opacity:.7}
+.lb-close{background:none;border:none;color:var(--ink);opacity:.3;font-size:1.5rem;cursor:none;transition:opacity .2s,color .2s,transform .2s;flex-shrink:0}
+.lb-close:hover{opacity:1;color:var(--deep);transform:rotate(90deg)}
+.lb-footer-hint{font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink);opacity:.18}
+/* Placeholder shown when no image is set */
+.lb-placeholder{
+  width:min(860px,90vw);max-height:50vh;
+  border-radius:6px;border:1px dashed var(--border);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;
+  padding:3rem;
+  color:var(--ink);opacity:.3;
+  font-size:.88rem;text-align:center;line-height:1.8;
+}
 
 /* ═══════════════════════════════════════
    PROJECT MODAL
@@ -265,6 +339,7 @@ footer .fa{color:var(--deep);opacity:.55}
   transition:transform .45s cubic-bezier(.22,1,.36,1);
   box-shadow:0 0 80px rgba(0,0,0,.8),0 0 40px rgba(137,233,0,.06);
 }
+body.light-mode #proj-modal{background:#f0f0ec}
 #proj-modal-backdrop.open #proj-modal{transform:translateY(0) scale(1)}
 #proj-modal::before{content:'';display:block;height:2px;flex-shrink:0;background:linear-gradient(to right,var(--deep),transparent);box-shadow:0 0 12px rgba(137,233,0,.4)}
 .pm-header{display:flex;align-items:flex-start;justify-content:space-between;padding:1.8rem 2.2rem 1.4rem;border-bottom:1px solid var(--bdr2);flex-shrink:0}
@@ -293,6 +368,7 @@ footer .fa{color:var(--deep);opacity:.55}
 .pm-step-title{font-size:.88rem;font-weight:600;color:var(--ink);margin-bottom:.18rem}
 .pm-step-text{font-size:.82rem;color:var(--ink);opacity:.48;line-height:1.75}
 .pm-terminal{background:#0d0d0d;border:1px solid var(--bdr2);border-radius:4px;overflow:hidden}
+body.light-mode .pm-terminal{background:#e4e4e0}
 .pm-terminal-bar{display:flex;align-items:center;gap:.45rem;padding:.6rem .9rem;border-bottom:1px solid var(--bdr2)}
 .pm-terminal-dot{width:9px;height:9px;border-radius:50%}
 .pm-terminal-title{font-size:.65rem;color:rgba(255,255,255,.2);margin-left:.4rem;letter-spacing:.05em}
@@ -311,6 +387,32 @@ footer .fa{color:var(--deep);opacity:.55}
 .btn-github:hover{border-color:var(--deep);box-shadow:0 0 28px rgba(137,233,0,.3);color:#111}
 .btn-github:hover::before{transform:translateX(0)}
 .btn-github span,.btn-github svg{position:relative;z-index:1;transition:color .25s}
+
+/* ── AI SUMMARISER BUTTON ── */
+.btn-ai-summarise{
+  display:flex;align-items:center;gap:.55rem;
+  width:100%;padding:.75rem 1.1rem;
+  background:rgba(137,233,0,.06);
+  border:1px solid rgba(137,233,0,.25);
+  color:var(--deep);
+  font-family:'Syne',sans-serif;font-size:.69rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;
+  border-radius:3px;cursor:none;
+  position:relative;overflow:hidden;
+  transition:background .25s,border-color .25s,box-shadow .25s;
+  margin-bottom:.8rem;
+}
+.btn-ai-summarise:hover{background:rgba(137,233,0,.12);border-color:rgba(137,233,0,.5);box-shadow:0 0 16px rgba(137,233,0,.15)}
+.btn-ai-summarise svg{flex-shrink:0}
+.ai-summary-box{
+  padding:.9rem 1rem;
+  background:rgba(137,233,0,.04);border:1px solid rgba(137,233,0,.15);
+  border-radius:3px;margin-bottom:.8rem;
+  font-size:.8rem;color:var(--ink);opacity:.7;line-height:1.75;
+  display:none;
+}
+.ai-summary-box.show{display:block}
+.ai-summary-box .ai-tag{font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:var(--deep);opacity:.55;display:block;margin-bottom:.4rem}
+
 .pm-footer{border-top:1px solid var(--bdr2);padding:1.1rem 2.2rem;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;background:rgba(0,0,0,.2)}
 .pm-footer-hint{font-size:.63rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink);opacity:.2}
 .pm-footer-hint kbd{display:inline-block;padding:.15rem .45rem;border:1px solid rgba(255,255,255,.15);border-radius:3px;font-family:monospace;font-size:.65rem}
@@ -318,7 +420,7 @@ footer .fa{color:var(--deep);opacity:.55}
 .pm-footer-link:hover{opacity:1}
 
 /* ═══════════════════════════════════════
-   HIDDEN / EASTER EGG SECTION
+   EASTER EGG
 ═══════════════════════════════════════ */
 #secret-overlay{
   position:fixed;inset:0;z-index:60000;
@@ -336,22 +438,18 @@ footer .fa{color:var(--deep);opacity:.55}
 .secret-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2.5rem,7vw,5rem);font-weight:800;color:var(--ink);line-height:.96;letter-spacing:-.02em;margin-bottom:1.5rem}
 .secret-title .hl{color:var(--deep);text-shadow:0 0 28px rgba(137,233,0,.5)}
 .secret-desc{font-size:.95rem;color:var(--ink);opacity:.45;line-height:1.9;margin-bottom:3rem;max-width:500px;margin-left:auto;margin-right:auto}
-/* Terminal-style fun fact box */
 .secret-terminal{background:#0d0d0d;border:1px solid var(--border);border-radius:4px;text-align:left;margin-bottom:3rem;overflow:hidden}
 .secret-terminal-bar{display:flex;align-items:center;gap:.5rem;padding:.7rem 1rem;border-bottom:1px solid var(--bdr2)}
 .secret-terminal-body{padding:1.2rem 1.4rem;font-size:.82rem;line-height:2;color:rgba(137,233,0,.75);font-family:monospace}
 .secret-terminal-body .s-cmd{color:var(--lime2)}
 .secret-terminal-body .s-out{color:rgba(255,255,255,.45)}
 .secret-terminal-body .s-cmt{color:rgba(255,255,255,.22);font-style:italic}
-/* Hidden skills grid */
 .secret-skills{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:.7rem;margin-bottom:3rem;text-align:left}
 .secret-skill-item{padding:.9rem 1.1rem;border-radius:3px;background:rgba(255,255,255,.02);border:1px solid var(--bdr2);transition:background .2s,border-color .2s,transform .2s}
 .secret-skill-item:hover{background:rgba(137,233,0,.06);border-color:rgba(137,233,0,.25);transform:translateY(-2px)}
 .secret-skill-name{font-size:.82rem;font-weight:600;color:var(--ink);margin-bottom:.2rem}
 .secret-skill-note{font-size:.7rem;color:var(--deep);opacity:.6}
-/* Konami hint */
 .secret-konami-hint{font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink);opacity:.18;margin-top:2rem}
-/* Badge */
 .secret-badge{display:inline-block;padding:.45rem 1rem;border:1px solid rgba(137,233,0,.3);border-radius:2px;font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--deep);margin-bottom:2.5rem;animation:badge-pulse 2s ease-in-out infinite}
 @keyframes badge-pulse{0%,100%{box-shadow:0 0 8px rgba(137,233,0,.2)}50%{box-shadow:0 0 20px rgba(137,233,0,.5)}}
 
@@ -367,6 +465,7 @@ footer .fa{color:var(--deep);opacity:.55}
   .nav-links{display:none}
   .nav-ham{display:flex}
   .hero-ring{display:none}
+  #theme-toggle{bottom:1.2rem;right:1.2rem}
 }
 @media(max-width:640px){
   #proj-modal-backdrop{padding:0;align-items:flex-end}
@@ -375,6 +474,7 @@ footer .fa{color:var(--deep);opacity:.55}
   .pm-header{padding:1.4rem 1.4rem 1.1rem}
   .pm-body{padding:1.4rem}
   .pm-footer{padding:.9rem 1.4rem}
+  #cert-lightbox-img{max-height:55vh}
 }
 </style>
 </head>
@@ -383,10 +483,10 @@ footer .fa{color:var(--deep);opacity:.55}
 <!-- Google Tag Manager (noscript) -->
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PZ7TXSX9" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
-<!-- LOADER -->
+<!-- LOADER (decrypt effect built in JS) -->
 <div id="loader">
-  <div class="loader-name">
-    <span style="animation-delay:.05s">M</span><span style="animation-delay:.12s">i</span><span style="animation-delay:.19s">d</span><span style="animation-delay:.26s">h</span><span style="animation-delay:.33s">u</span><span style="animation-delay:.40s">n</span>&nbsp;<span style="animation-delay:.5s">R</span><span style="animation-delay:.57s">a</span><span style="animation-delay:.64s">j</span><span class="dot" style="animation-delay:.72s">.</span>
+  <div class="loader-name" id="loader-name-el">
+    <!-- Characters injected by JS for decrypt animation -->
   </div>
   <div class="loader-bar-wrap"><div class="loader-bar"></div></div>
   <p class="loader-pct" id="loader-pct">0%</p>
@@ -397,6 +497,21 @@ footer .fa{color:var(--deep);opacity:.55}
 <div id="scanlines"></div>
 <div id="c-dot"></div>
 <div id="c-ring"></div>
+
+<!-- THEME TOGGLE -->
+<button id="theme-toggle" aria-label="Toggle theme">
+  <!-- Moon icon (dark mode = default) -->
+  <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="var(--deep)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
+  </svg>
+  <!-- Sun icon (light mode) -->
+  <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="var(--deep)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+    <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+  </svg>
+</button>
 
 <svg class="shape3d" style="width:200px;top:20%;left:5%;--dur:18s" viewBox="0 0 100 100"><polygon points="50,5 95,25 95,75 50,95 5,75 5,25" fill="none" stroke="#89E900" stroke-width="1"/></svg>
 <svg class="shape3d" style="width:140px;top:60%;right:6%;--dur:13s;animation-delay:-4s" viewBox="0 0 100 100"><rect x="15" y="15" width="70" height="70" fill="none" stroke="#89E900" stroke-width="1" transform="rotate(45 50 50)"/></svg>
@@ -565,89 +680,91 @@ footer .fa{color:var(--deep);opacity:.55}
 
 <div class="divider"></div>
 
-<!-- CERTIFICATIONS — each card links to its certificate -->
+<!-- CERTIFICATIONS — no direct external links, lightbox only -->
 <section id="certifications"><div class="section">
   <p class="section-num">Credentials</p>
   <h2 class="section-h2 reveal">Certifications</h2>
+  <p class="reveal" style="font-size:.82rem;color:var(--ink);opacity:.35;margin-top:-2.5rem;margin-bottom:2.5rem;transition-delay:.1s">Click any certificate to view it.</p>
   <div class="cert-grid">
 
-    <a class="cert-card" href="https://www.aws.training/" target="_blank" rel="noopener">
-      <span class="cert-arrow">↗</span>
+    <!-- data-cert-img: replace with your actual certificate image/screenshot URL -->
+    <div class="cert-card" data-cert-name="Introduction to AWS Cloud: Builder Labs Learning Plan" data-cert-meta="AWS Training Online · 2026" data-cert-img="">
+      <span class="cert-zoom">⊕</span>
       <p class="cert-name">Introduction to AWS Cloud: Builder Labs Learning Plan</p>
       <p class="cert-meta">AWS Training Online · 2026</p>
-    </a>
+    </div>
 
-    <a class="cert-card" href="https://www.simplilearn.com/cyber-security/introduction-to-cyber-security-free-course" target="_blank" rel="noopener">
-      <span class="cert-arrow">↗</span>
+    <div class="cert-card" data-cert-name="Introduction to Cyber Security" data-cert-meta="Simplilearn · 2025" data-cert-img="">
+      <span class="cert-zoom">⊕</span>
       <p class="cert-name">Introduction to Cyber Security</p>
       <p class="cert-meta">Simplilearn · 2025</p>
-    </a>
+    </div>
 
-    <a class="cert-card" href="https://www.simplilearn.com/cloud-security/introduction-to-cloud-security-skillup" target="_blank" rel="noopener">
-      <span class="cert-arrow">↗</span>
+    <div class="cert-card" data-cert-name="Introduction to Cloud Security" data-cert-meta="Simplilearn · 2025" data-cert-img="">
+      <span class="cert-zoom">⊕</span>
       <p class="cert-name">Introduction to Cloud Security</p>
       <p class="cert-meta">Simplilearn · 2025</p>
-    </a>
+    </div>
 
-    <a class="cert-card" href="https://www.pmi.org/learning/training-development/online-courses" target="_blank" rel="noopener">
-      <span class="cert-arrow">↗</span>
+    <div class="cert-card" data-cert-name="Project Management Foundations (PMI)" data-cert-meta="Project Management Institute · 2025" data-cert-img="">
+      <span class="cert-zoom">⊕</span>
       <p class="cert-name">Project Management Foundations (PMI)</p>
       <p class="cert-meta">Project Management Institute · 2025</p>
-    </a>
+    </div>
 
-    <a class="cert-card" href="https://www.linkedin.com/learning/project-management-foundations" target="_blank" rel="noopener">
-      <span class="cert-arrow">↗</span>
+    <div class="cert-card" data-cert-name="Project Management Foundations" data-cert-meta="LinkedIn Learning · 2025" data-cert-img="">
+      <span class="cert-zoom">⊕</span>
       <p class="cert-name">Project Management Foundations</p>
       <p class="cert-meta">LinkedIn Learning · 2025</p>
-    </a>
+    </div>
 
-    <a class="cert-card" href="https://education.oracle.com/oracle-oci-generative-ai-professional/pexam_1Z0-1127-25" target="_blank" rel="noopener">
-      <span class="cert-arrow">↗</span>
+    <div class="cert-card" data-cert-name="OCI Generative AI Professional 2025" data-cert-meta="Oracle · 2025" data-cert-img="">
+      <span class="cert-zoom">⊕</span>
       <p class="cert-name">OCI Generative AI Professional 2025</p>
       <p class="cert-meta">Oracle · 2025</p>
-    </a>
+    </div>
 
-    <a class="cert-card" href="https://www.freecodecamp.org/learn/javascript-algorithms-and-data-structures/" target="_blank" rel="noopener">
-      <span class="cert-arrow">↗</span>
+    <div class="cert-card" data-cert-name="JavaScript Algorithms &amp; Data Structures" data-cert-meta="freeCodeCamp · 2025" data-cert-img="">
+      <span class="cert-zoom">⊕</span>
       <p class="cert-name">JavaScript Algorithms &amp; Data Structures</p>
       <p class="cert-meta">freeCodeCamp · 2025</p>
-    </a>
+    </div>
 
-    <a class="cert-card" href="https://www.tcsion.com/hub/digital-learning-hub/career-edge-it-primer/" target="_blank" rel="noopener">
-      <span class="cert-arrow">↗</span>
+    <div class="cert-card" data-cert-name="TCS iON Career Edge — IT Primer" data-cert-meta="TCS iON · 2025" data-cert-img="">
+      <span class="cert-zoom">⊕</span>
       <p class="cert-name">TCS iON Career Edge — IT Primer</p>
       <p class="cert-meta">TCS iON · 2025</p>
-    </a>
+    </div>
 
-    <a class="cert-card" href="https://www.infosysspringboard.com/courses/c-plus-plus-programming-for-beginners/" target="_blank" rel="noopener">
-      <span class="cert-arrow">↗</span>
+    <div class="cert-card" data-cert-name="C++ Programming — Beginners" data-cert-meta="Infosys Springboard · 2025" data-cert-img="">
+      <span class="cert-zoom">⊕</span>
       <p class="cert-name">C++ Programming — Beginners</p>
       <p class="cert-meta">Infosys Springboard · 2025</p>
-    </a>
+    </div>
 
-    <a class="cert-card" href="https://www.cloudskillsboost.google/course_templates/981" target="_blank" rel="noopener">
-      <span class="cert-arrow">↗</span>
+    <div class="cert-card" data-cert-name="Build Real World AI Apps with Gemini &amp; Imagen" data-cert-meta="Google Cloud · 2024" data-cert-img="">
+      <span class="cert-zoom">⊕</span>
       <p class="cert-name">Build Real World AI Apps with Gemini &amp; Imagen</p>
       <p class="cert-meta">Google Cloud · 2024</p>
-    </a>
+    </div>
 
-    <a class="cert-card" href="https://www.cloudskillsboost.google/course_templates/659" target="_blank" rel="noopener">
-      <span class="cert-arrow">↗</span>
+    <div class="cert-card" data-cert-name="Store, Process &amp; Manage Data on Google Cloud — CLI" data-cert-meta="Google Cloud · 2024" data-cert-img="">
+      <span class="cert-zoom">⊕</span>
       <p class="cert-name">Store, Process &amp; Manage Data on Google Cloud — CLI</p>
       <p class="cert-meta">Google Cloud · 2024</p>
-    </a>
+    </div>
 
-    <a class="cert-card" href="https://www.cloudskillsboost.google/course_templates/667" target="_blank" rel="noopener">
-      <span class="cert-arrow">↗</span>
+    <div class="cert-card" data-cert-name="Analyze Sentiment with Natural Language API" data-cert-meta="Google Cloud · 2024" data-cert-img="">
+      <span class="cert-zoom">⊕</span>
       <p class="cert-name">Analyze Sentiment with Natural Language API</p>
       <p class="cert-meta">Google Cloud · 2024</p>
-    </a>
+    </div>
 
-    <a class="cert-card" href="https://www.infosysspringboard.com/courses/programming-in-c/" target="_blank" rel="noopener">
-      <span class="cert-arrow">↗</span>
+    <div class="cert-card" data-cert-name="Programming in C" data-cert-meta="Infosys Springboard · 2024" data-cert-img="">
+      <span class="cert-zoom">⊕</span>
       <p class="cert-name">Programming in C</p>
       <p class="cert-meta">Infosys Springboard · 2024</p>
-    </a>
+    </div>
 
   </div>
 </div></section>
@@ -695,16 +812,34 @@ footer .fa{color:var(--deep);opacity:.55}
 
 <footer>
   <span>© 2026 Midhun Raj</span>
-  <!-- secret trigger: click the dot 5× -->
   <span class="fa footer-secret" id="secret-trigger" title="...">PORTFOLIO<span style="color:var(--deep)">.</span></span>
 </footer>
 
 <!-- ═══════════════════════════════════════
-     PROJECT MODAL  (was missing — now added)
+     CERT LIGHTBOX
+═══════════════════════════════════════ -->
+<div id="cert-lightbox" role="dialog" aria-modal="true">
+  <div class="lb-top">
+    <div class="lb-info">
+      <p class="lb-name" id="lb-name-el"></p>
+      <p class="lb-meta" id="lb-meta-el"></p>
+    </div>
+    <button class="lb-close" id="lb-close-btn" aria-label="Close">✕</button>
+  </div>
+  <!-- If cert-img is set, shows <img>; else placeholder -->
+  <img id="cert-lightbox-img" src="" alt="Certificate" style="display:none"/>
+  <div class="lb-placeholder" id="lb-placeholder">
+    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" style="opacity:.4"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+    <p>Certificate image not yet added.<br/>Replace the <code>data-cert-img</code> attribute on this card with your screenshot URL to display it here.</p>
+  </div>
+  <p class="lb-footer-hint">Press <kbd style="border:1px solid rgba(255,255,255,.2);padding:.1rem .4rem;border-radius:3px;font-family:monospace;font-size:.6rem">Esc</kbd> to close</p>
+</div>
+
+<!-- ═══════════════════════════════════════
+     PROJECT MODAL
 ═══════════════════════════════════════ -->
 <div id="proj-modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="pm-title-el">
   <div id="proj-modal">
-    <!-- green accent line via ::before -->
     <div class="pm-header">
       <div class="pm-header-left">
         <span class="pm-eyebrow" id="pm-eyebrow-el"></span>
@@ -716,6 +851,17 @@ footer .fa{color:var(--deep);opacity:.55}
     <div class="pm-body">
       <div>
         <p class="pm-desc" id="pm-desc-el"></p>
+
+        <!-- AI SUMMARISER -->
+        <button class="btn-ai-summarise" id="ai-summarise-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          Explain like I'm a recruiter
+        </button>
+        <div class="ai-summary-box" id="ai-summary-box">
+          <span class="ai-tag">AI · One-line recruiter summary</span>
+          <span id="ai-summary-text"></span>
+        </div>
+
         <p class="pm-section-label">Tech Stack</p>
         <div class="pm-stack" id="pm-stack-el"></div>
         <p class="pm-section-label">How it works</p>
@@ -755,8 +901,7 @@ footer .fa{color:var(--deep);opacity:.55}
 </div>
 
 <!-- ═══════════════════════════════════════
-     HIDDEN / EASTER EGG SECTION
-     Trigger: click "PORTFOLIO." in footer 5×
+     EASTER EGG
 ═══════════════════════════════════════ -->
 <div id="secret-overlay">
   <button class="secret-close" id="secret-close" aria-label="Close">✕</button>
@@ -765,7 +910,6 @@ footer .fa{color:var(--deep);opacity:.55}
     <div class="secret-badge">Access Level: Root</div>
     <h2 class="secret-title">Behind the <span class="hl">Terminal</span></h2>
     <p class="secret-desc">A few things that don't make it onto a typical resume — the tools I use daily, what I'm currently learning, and the rabbit holes I fall into at 2am.</p>
-
     <div class="secret-terminal">
       <div class="secret-terminal-bar">
         <div class="pm-terminal-dot" style="background:#ff5f57"></div>
@@ -791,7 +935,6 @@ footer .fa{color:var(--deep);opacity:.55}
 <span class="s-out">→  Web app pentesting (OWASP Top 10)</span>
       </div>
     </div>
-
     <p class="pm-section-label" style="text-align:left;margin-bottom:1rem">Tools I actually use</p>
     <div class="secret-skills">
       <div class="secret-skill-item"><p class="secret-skill-name">Kali Linux</p><p class="secret-skill-note">Daily driver for CTFs</p></div>
@@ -803,18 +946,53 @@ footer .fa{color:var(--deep);opacity:.55}
       <div class="secret-skill-item"><p class="secret-skill-name">Git + VS Code</p><p class="secret-skill-note">Dev workflow</p></div>
       <div class="secret-skill-item"><p class="secret-skill-name">Docker</p><p class="secret-skill-note">Lab environments</p></div>
     </div>
-
     <p class="secret-konami-hint">click PORTFOLIO. in the footer 5× to return here anytime</p>
   </div>
 </div>
 
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 <script>
-/* ── EMAILJS ── */
-(function(){ emailjs.init("RfrWOpTJ4asmNQ66w"); })();
-
-/* ── LOADER ── */
+/* ════════════════════════════════════════════
+   1. HACKER DECRYPT LOADER
+   Characters scramble → resolve to real name
+════════════════════════════════════════════ */
 (function(){
+  const target = 'Midhun Raj.';
+  const glyphs = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%^&*!?><{}[]';
+  const container = document.getElementById('loader-name-el');
+  const dotIndexes = [10]; // index of '.' in target
+
+  // Build char spans
+  let spans = [];
+  for(let i = 0; i < target.length; i++){
+    if(target[i] === ' '){ container.appendChild(document.createTextNode('\u00a0')); continue; }
+    const s = document.createElement('span');
+    s.className = 'loader-char' + (dotIndexes.includes(i) ? ' dot' : '');
+    s.textContent = glyphs[Math.floor(Math.random()*glyphs.length)];
+    s.style.opacity = '1';
+    container.appendChild(s);
+    spans.push({el:s, final:target[i], resolved:false, delay: i * 60 });
+  }
+
+  // Scramble phase: each char scrambles for its delay, then resolves
+  let start = null;
+  const scrambleDuration = 80; // ms each char scrambles before resolving
+
+  function scramble(ts){
+    if(!start) start = ts;
+    const elapsed = ts - start;
+    let allDone = true;
+    spans.forEach(c => {
+      if(c.resolved){ c.el.textContent = c.final; return; }
+      if(elapsed < c.delay){ allDone = false; c.el.textContent = glyphs[Math.floor(Math.random()*glyphs.length)]; return; }
+      if(elapsed < c.delay + scrambleDuration){ allDone = false; c.el.textContent = glyphs[Math.floor(Math.random()*glyphs.length)]; return; }
+      c.el.textContent = c.final; c.resolved = true;
+    });
+    if(!allDone) requestAnimationFrame(scramble);
+  }
+  requestAnimationFrame(scramble);
+
+  // Progress counter + dismiss
   const loader = document.getElementById('loader');
   const pct = document.getElementById('loader-pct');
   let n = 0;
@@ -826,7 +1004,28 @@ footer .fa{color:var(--deep);opacity:.55}
   window.addEventListener('load', ()=>{ setTimeout(()=>loader.classList.add('done'), 400); });
 })();
 
-/* ── CURSOR ── */
+/* ════════════════════════════════════════════
+   2. DARK / LIGHT MODE TOGGLE
+════════════════════════════════════════════ */
+(function(){
+  const btn = document.getElementById('theme-toggle');
+  const stored = localStorage.getItem('theme');
+  if(stored === 'light') document.body.classList.add('light-mode');
+
+  btn.addEventListener('click', ()=>{
+    document.body.classList.toggle('light-mode');
+    localStorage.setItem('theme', document.body.classList.contains('light-mode') ? 'light' : 'dark');
+  });
+})();
+
+/* ════════════════════════════════════════════
+   3. EMAILJS
+════════════════════════════════════════════ */
+(function(){ emailjs.init("RfrWOpTJ4asmNQ66w"); })();
+
+/* ════════════════════════════════════════════
+   4. CURSOR
+════════════════════════════════════════════ */
 const dot = document.getElementById('c-dot');
 const ring = document.getElementById('c-ring');
 let mx=0, my=0, rx=0, ry=0;
@@ -843,7 +1042,7 @@ function addHoverCursor(els){
     el.addEventListener('mouseleave',()=>{ dot.classList.remove('hover-mode'); ring.classList.remove('hover-mode'); });
   });
 }
-addHoverCursor(document.querySelectorAll('a, button, .skill-tag, .card, .cert-card'));
+addHoverCursor(document.querySelectorAll('a, button, .skill-tag, .card, .cert-card, #theme-toggle'));
 
 /* ── CLICK RIPPLE ── */
 document.addEventListener('click', e=>{
@@ -949,9 +1148,54 @@ document.getElementById('send-btn').addEventListener('click',function(){
     });
 });
 
-/* ═══════════════════════════════════════
-   PROJECT DATA
-═══════════════════════════════════════ */
+/* ════════════════════════════════════════════
+   5. CERT LIGHTBOX
+════════════════════════════════════════════ */
+(function(){
+  const lightbox = document.getElementById('cert-lightbox');
+  const imgEl    = document.getElementById('cert-lightbox-img');
+  const ph       = document.getElementById('lb-placeholder');
+  const nameEl   = document.getElementById('lb-name-el');
+  const metaEl   = document.getElementById('lb-meta-el');
+  const closeBtn = document.getElementById('lb-close-btn');
+
+  function openLightbox(name, meta, imgSrc){
+    nameEl.textContent = name;
+    metaEl.textContent = meta;
+    if(imgSrc){
+      imgEl.src = imgSrc; imgEl.style.display = 'block'; ph.style.display = 'none';
+    } else {
+      imgEl.style.display = 'none'; ph.style.display = 'flex';
+    }
+    document.body.style.overflow = 'hidden';
+    lightbox.classList.add('open');
+    addHoverCursor(lightbox.querySelectorAll('button'));
+  }
+
+  function closeLightbox(){
+    lightbox.classList.remove('open');
+    document.body.style.overflow = '';
+    setTimeout(()=>{ imgEl.src=''; }, 400);
+  }
+
+  document.querySelectorAll('.cert-card').forEach(card=>{
+    card.addEventListener('click', ()=>{
+      openLightbox(
+        card.dataset.certName,
+        card.dataset.certMeta,
+        card.dataset.certImg || ''
+      );
+    });
+  });
+
+  closeBtn.addEventListener('click', closeLightbox);
+  lightbox.addEventListener('click', e=>{ if(e.target===lightbox) closeLightbox(); });
+  window.closeLightbox = closeLightbox;
+})();
+
+/* ════════════════════════════════════════════
+   6. PROJECT DATA
+════════════════════════════════════════════ */
 const PROJECTS = {
   airgap:{
     title:'Air Gap', subtitle:'AI Gesture-Based Virtual Mouse', year:'2026',
@@ -967,6 +1211,7 @@ const PROJECTS = {
     ],
     terminal:'<span class="comment"># Clone &amp; install</span>\n<span class="cmd">$ git clone</span> https://github.com/miidhunraj/air-gap &amp;&amp; cd air-gap\n<span class="cmd">$ pip install</span> -r requirements.txt\n\n<span class="comment"># Run</span>\n<span class="cmd">$ python</span> main.py\n<span class="out">✔  Camera initialised — hand tracking active</span>',
     terminalTitle:'~/air-gap — python',
+    aiPrompt:'Air Gap is a Python/OpenCV/MediaPipe project that turns any webcam into a gesture-controlled virtual mouse — no hardware needed.',
   },
   easypluck:{
     title:'Easy-Pluck', subtitle:'Local Network File Sharing', year:'2025',
@@ -982,6 +1227,7 @@ const PROJECTS = {
     ],
     terminal:'<span class="comment"># Clone &amp; install</span>\n<span class="cmd">$ git clone</span> https://github.com/miidhunraj/easy-pluck &amp;&amp; cd easy-pluck\n<span class="cmd">$ pip install</span> flask qrcode pillow\n\n<span class="comment"># Launch</span>\n<span class="cmd">$ python</span> app.py\n<span class="out">✔  Serving on http://192.168.x.x:5000</span>\n<span class="out">✔  QR code ready — scan to connect</span>',
     terminalTitle:'~/easy-pluck — python',
+    aiPrompt:'Easy-Pluck is a Flask-based local network file-sharing tool with QR code pairing — zero setup, no internet required.',
   },
   portfolio:{
     title:'Portfolio', subtitle:'Personal Developer Portfolio', year:'2025',
@@ -997,18 +1243,21 @@ const PROJECTS = {
     ],
     terminal:'<span class="comment"># Clone &amp; open</span>\n<span class="cmd">$ git clone</span> https://github.com/miidhunraj/portfolio &amp;&amp; cd portfolio\n\n<span class="comment"># No build step — open directly</span>\n<span class="cmd">$ open</span> index.html\n<span class="out">✔  Portfolio running in browser</span>',
     terminalTitle:'~/portfolio — bash',
+    aiPrompt:'This portfolio is a single-file vanilla HTML/CSS/JS website with a terminal-inspired dark aesthetic, 3D card effects, and a serverless contact form.',
   },
 };
 
-/* ═══════════════════════════════════════
-   MODAL ENGINE
-═══════════════════════════════════════ */
+/* ════════════════════════════════════════════
+   7. MODAL ENGINE
+════════════════════════════════════════════ */
 (function(){
   const backdrop = document.getElementById('proj-modal-backdrop');
   const closeBtn = document.getElementById('pm-close-btn');
+  let currentProject = null;
 
   function openModal(id){
     const p = PROJECTS[id]; if(!p) return;
+    currentProject = p;
     document.getElementById('pm-eyebrow-el').textContent    = p.year+' · '+p.category;
     document.getElementById('pm-title-el').textContent      = p.title;
     document.getElementById('pm-subtitle-el').textContent   = p.subtitle;
@@ -1022,6 +1271,16 @@ const PROJECTS = {
     document.getElementById('pm-github-btn').href               = p.github;
     document.getElementById('pm-github-footer-btn').href        = p.github;
     document.getElementById('pm-github-footer-label').textContent = p.githubLabel;
+
+    // Reset AI summary
+    const summaryBox  = document.getElementById('ai-summary-box');
+    const summaryText = document.getElementById('ai-summary-text');
+    summaryBox.classList.remove('show');
+    summaryText.textContent = '';
+    const aiBtn = document.getElementById('ai-summarise-btn');
+    aiBtn.textContent = ''; 
+    aiBtn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg> Explain like I\'m a recruiter';
+    aiBtn.disabled = false;
 
     // Stack pills
     const stackEl = document.getElementById('pm-stack-el'); stackEl.innerHTML='';
@@ -1040,18 +1299,15 @@ const PROJECTS = {
       stepsEl.appendChild(div);
     });
 
-    // Reset scroll & open
     document.getElementById('proj-modal').querySelector('.pm-body').scrollTop=0;
     document.body.style.overflow='hidden';
     backdrop.classList.add('open');
 
-    // Animate in
     setTimeout(()=>{
       backdrop.querySelectorAll('.pm-pill').forEach(el=>el.classList.add('anim'));
       backdrop.querySelectorAll('.pm-step').forEach(el=>el.classList.add('anim'));
     }, 200);
 
-    // Cursor on modal elements
     addHoverCursor(backdrop.querySelectorAll('a, button'));
   }
 
@@ -1062,12 +1318,11 @@ const PROJECTS = {
       backdrop.querySelectorAll('.pm-pill').forEach(el=>el.classList.remove('anim'));
       backdrop.querySelectorAll('.pm-step').forEach(el=>el.classList.remove('anim'));
     }, 450);
+    currentProject = null;
   }
 
-  // ── FIX: use mousedown + stopPropagation so card::after doesn't swallow clicks ──
   document.querySelectorAll('[data-project]').forEach(card=>{
     card.addEventListener('click', e=>{
-      // don't open if user clicked a link inside card
       if(e.target.closest('a')) return;
       openModal(card.dataset.project);
     });
@@ -1076,12 +1331,59 @@ const PROJECTS = {
 
   closeBtn.addEventListener('click', closeModal);
   backdrop.addEventListener('click', e=>{ if(e.target===backdrop) closeModal(); });
-  document.addEventListener('keydown', e=>{ if(e.key==='Escape'){ if(backdrop.classList.contains('open')) closeModal(); if(document.getElementById('secret-overlay').classList.contains('open')) closeSecret(); } });
+  document.addEventListener('keydown', e=>{
+    if(e.key==='Escape'){
+      if(backdrop.classList.contains('open')) closeModal();
+      if(document.getElementById('secret-overlay').classList.contains('open')) closeSecret();
+      if(document.getElementById('cert-lightbox').classList.contains('open')) window.closeLightbox();
+    }
+  });
+
+  /* ── AI SUMMARISER ── */
+  document.getElementById('ai-summarise-btn').addEventListener('click', async function(){
+    if(!currentProject) return;
+    const btn = this;
+    const summaryBox  = document.getElementById('ai-summary-box');
+    const summaryText = document.getElementById('ai-summary-text');
+
+    btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="animation:spin .8s linear infinite"><path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" opacity=".25"/><path d="M21 12a9 9 0 00-9-9"/></svg> Generating…';
+    btn.disabled = true;
+
+    // inject spin keyframe once
+    if(!document.getElementById('spin-kf')){
+      const s = document.createElement('style'); s.id='spin-kf';
+      s.textContent = '@keyframes spin{to{transform:rotate(360deg)}}';
+      document.head.appendChild(s);
+    }
+
+    try {
+      const res = await fetch('https://api.anthropic.com/v1/messages', {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({
+          model:'claude-sonnet-4-20250514',
+          max_tokens:1000,
+          system:'You are a recruiter-friendly tech communicator. Given a brief project description, write exactly ONE sentence (max 30 words) that explains the project\'s value to a non-technical recruiter. Focus on impact and skill demonstrated. No jargon. No bullet points. Just the sentence.',
+          messages:[{role:'user', content: currentProject.aiPrompt}]
+        })
+      });
+      const data = await res.json();
+      const text = data.content?.find(b=>b.type==='text')?.text?.trim() || 'Could not generate summary — try again.';
+      summaryText.textContent = text;
+      summaryBox.classList.add('show');
+      btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Summary generated';
+    } catch(err){
+      summaryText.textContent = 'API unavailable — run locally with your own Anthropic key.';
+      summaryBox.classList.add('show');
+      btn.innerHTML = '⚠ Try again';
+      btn.disabled = false;
+    }
+  });
 })();
 
-/* ═══════════════════════════════════════
-   EASTER EGG — click footer dot 5×
-═══════════════════════════════════════ */
+/* ════════════════════════════════════════════
+   8. EASTER EGG — footer dot 5×
+════════════════════════════════════════════ */
 (function(){
   const trigger = document.getElementById('secret-trigger');
   const overlay = document.getElementById('secret-overlay');
@@ -1092,10 +1394,7 @@ const PROJECTS = {
     clicks++;
     clearTimeout(timer);
     timer = setTimeout(()=>{ clicks=0; }, 2000);
-    if(clicks >= 5){
-      clicks = 0;
-      openSecret();
-    }
+    if(clicks >= 5){ clicks=0; openSecret(); }
   });
 
   function openSecret(){
@@ -1110,8 +1409,7 @@ const PROJECTS = {
   }
 
   closeBtn.addEventListener('click', closeSecret);
-  // ESC handled in keydown listener above
-  window.closeSecret = closeSecret; // expose for ESC handler
+  window.closeSecret = closeSecret;
 })();
 </script>
 </body>
