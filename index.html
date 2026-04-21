@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>404 // Access Terminal</title>
+
+<style>
+body {
+    margin: 0;
+    background: black;
+    color: #00ff9f;
+    font-family: monospace;
+    overflow: hidden;
+}
+#terminal {
+    padding: 20px;
+    height: 100vh;
+    overflow-y: auto;
+    white-space: pre-wrap;
+}
+.input-line {
+    display: flex;
+}
+input {
+    background: transparent;
+    border: none;
+    color: #00ff9f;
+    font-family: monospace;
+    outline: none;
+    width: 100%;
+}
+.glitch {
+    color: red;
+    animation: blink 1s infinite;
+}
+@keyframes blink {
+    50% { opacity: 0; }
+}
+
+#controls {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    font-size: 12px;
+}
+button {
+    background: black;
+    color: #00ff9f;
+    border: 1px solid #00ff9f;
+    cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div id="controls">
+    <button onclick="toggleSound()">🔊 Sound</button>
+</div>
+
+<div id="terminal"></div>
+
+<script>
+const terminal = document.getElementById("terminal");
+
+let state = "start";
+let soundEnabled = false;
+
+// 🔊 SOUND SETUP (tiny beep using Web Audio API)
+let audioCtx;
+function playBeep(freq = 600, duration = 0.03) {
+    if (!soundEnabled) return;
+
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+    const oscillator = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+
+    oscillator.connect(gain);
+    gain.connect(audioCtx.destination);
+
+    oscillator.frequency.value = freq;
+    oscillator.start();
+
+    gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+
+    oscillator.stop(audioCtx.currentTime + duration);
+}
+
+function toggleSound() {
+    soundEnabled = !soundEnabled;
+}
+
+// ⌨️ TYPING EFFECT
+function typeText(text, callback) {
+    const div = document.createElement("div");
+    terminal.appendChild(div);
+
+    let i = 0;
+    function typing() {
+        if (i < text.length) {
+            div.innerHTML += text[i];
+            playBeep(700, 0.01);
+            i++;
+            setTimeout(typing, 15); // speed control here
+        } else {
+            terminal.scrollTop = terminal.scrollHeight;
+            if (callback) callback();
+        }
+    }
+    typing();
+}
+
+function print(text, callback) {
+    typeText(text, callback);
+}
+
+function createInput() {
+    const line = document.createElement("div");
+    line.className = "input-line";
+
+    const span = document.createElement("span");
+    span.innerText = "> ";
+
+    const input = document.createElement("input");
+
+    input.addEventListener("keydown", function(e) {
+        if (e.key === "Enter") {
+            playBeep(300, 0.05);
+            handleCommand(input.value.trim().toLowerCase());
+            input.disabled = true;
+        }
+    });
+
+    line.appendChild(span);
+    line.appendChild(input);
+    terminal.appendChild(line);
+    input.focus();
+}
+
+function handleCommand(cmd) {
+
+    if (cmd === "exit") {
+        window.location.href = "https://miidhunraj.github.io/resume/resume";
+        return;
+    }
+
+    if (state === "start") {
+        if (cmd === "y") {
+            print("Initializing recovery terminal...", () => {
+                print("Type 'help' to begin.", () => {
+                    state = "level1";
+                    createInput();
+                });
+            });
+            return;
+        } else {
+            window.location.href = "https://miidhunraj.github.io/resume/resume";
+            return;
+        }
+    }
+
+    else if (state === "level1") {
+        if (cmd === "help") {
+            print("Available commands: scan, connect, exit", createInput);
+            return;
+        } 
+        else if (cmd === "scan") {
+            print("Scanning...", () => {
+                print("Open ports found: 22, 80, 443", createInput);
+            });
+            return;
+        } 
+        else if (cmd === "connect 80") {
+            print("Connecting to port 80...", () => {
+                print("Access requires passcode.", () => {
+                    print("Hint: ERR0R_C0D3: P4G3_80", () => {
+                        state = "password";
+                        createInput();
+                    });
+                });
+            });
+            return;
+        } 
+        else {
+            print("Unknown command.", createInput);
+            return;
+        }
+    }
+
+    else if (state === "password") {
+        if (cmd === "page80") {
+            print("Access Granted...", () => {
+                print("Redirecting...", () => {
+                    setTimeout(() => {
+                        window.location.href = "https://miidhunraj.github.io/resume/resume";
+                    }, 1200);
+                });
+            });
+        } else {
+            print("<span class='glitch'>ACCESS DENIED</span>", createInput);
+        }
+        return;
+    }
+}
+
+// Boot sequence
+print("ERROR 404: SYSTEM FAILURE", () => {
+    print("Recovery Mode? (Y/N)", createInput);
+});
+
+</script>
+
+</body>
+</html>
